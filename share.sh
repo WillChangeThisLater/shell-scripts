@@ -1,12 +1,34 @@
 #!/bin/bash
+
+# Share contents of current directory and subdirectories
+# I use this to shuttle files locally from machine to machine
 #
+# On machine you want to share from:
+#
+# ```bash
+# ./share.sh
+# ```
+#
+# On machine you want to pull file(s) to:
+#
+# ```bash
+# curl -o shell-scripts.tar.gz localhost:8080/shell-scripts.tar.gz
+# gunzip shell-scripts.tar.gz
+# tar -xvf shell-scripts.tar
+# rm shell-scripts.tar
+# ```
+
+set -euo pipefail
+
+# Remember the current directory
+PWD=$(pwd)
 
 trap ctrl_c INT
 
 function ctrl_c {
   kill -9 $PID
   rm -rf /tmp/"$rand"
-  cd "$PWD" || exit 1 exit 0
+  cd "$PWD"
 }
 
 function random_string {
@@ -18,9 +40,6 @@ function usage {
   echo "Usage: $0 [-p PORT] [-b BIND] TARGET"
   exit 1
 }
-
-# Remember the current directory
-PWD=$(pwd)
 
 # Set args
 PORT=8080
@@ -44,7 +63,9 @@ done
 
 # Figure out what we want to tar
 shift "$(( OPTIND - 1 ))"
-FILEPATH=$1
+FILEPATH="${1:-"."}"
+
+echo "Serving files from $FILEPATH" >&2
 if [[ -z $FILEPATH ]]; then
   FILEPATH="."
 fi
