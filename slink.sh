@@ -104,4 +104,4 @@ links() {
   /bin/sh -c "$command"
 }
 
-l
+links
