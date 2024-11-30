@@ -12,7 +12,7 @@ The most recent error in the session is:
 
 ```bash
 error: you cannot perform this operation unless you are root.
-```
+\`\`\`
 
 This error occurs because the `pacman` command, which is used for package management in Arch Linux, requires root privileges to install or update packages.
 
