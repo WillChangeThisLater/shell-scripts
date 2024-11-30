@@ -78,8 +78,7 @@ if [[ -d $FILEPATH ]]; then
     DIRNAME="$(dirname "$FILEPATH")"
     cd "$DIRNAME" || exit
     mkdir /tmp/"$rand"
-    #tar --exclude=".*" -zcvf /tmp/"$rand"/"$BASENAME".tar.gz "$BASENAME"
-    tar -zcvf /tmp/"$rand"/"$BASENAME".tar.gz "$BASENAME"
+    tar --exclude=".*" -zcvf /tmp/"$rand"/"$BASENAME".tar.gz "$BASENAME"
 elif [[ -f $FILEPATH ]]; then
     BASENAME="$(basename "$FILEPATH")"
     mkdir /tmp/"$rand"
