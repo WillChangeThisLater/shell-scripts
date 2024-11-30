@@ -153,11 +153,6 @@ Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
 
 Client:
 ```bash
-[arch@archlinux out]$ curl 192.168.1.170:8080/shell-scripts.tar.gz 0o shell-scripts.tar.gz
-Warning: Binary output can mess up your terminal. Use "--output -" to tell
-Warning: curl to output it to your terminal anyway, or consider "--output
-Warning: <FILE>" to save to a file.
-^C
 [arch@archlinux out]$ curl 192.168.1.170:8080/shell-scripts.tar.gz -o shell-scripts.tar.gz
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
