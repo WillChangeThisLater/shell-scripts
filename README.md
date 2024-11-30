@@ -128,12 +128,6 @@ Server:
 [arch@archlinux shell-scripts]$ ifconfig wlan0
 wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet 192.168.1.170  netmask 255.255.255.0  broadcast 192.168.1.255
-        inet6 fe80::da03:901:485d:cd15  prefixlen 64  scopeid 0x20<link>
-        ether 24:fe:9a:0a:13:0d  txqueuelen 1000  (Ethernet)
-        RX packets 22639955  bytes 30410281957 (28.3 GiB)
-        RX errors 0  dropped 7563  overruns 0  frame 0
-        TX packets 4373953  bytes 4253235567 (3.9 GiB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
 [arch@archlinux shell-scripts]$ ./share.sh .
 Serving files from .
