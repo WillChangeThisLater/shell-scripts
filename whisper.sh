@@ -2,46 +2,25 @@
 
 set -euo pipefail
 
-# This is a funny, hacky little script.
+# This script is a hack. It lets you share relatively tiny folders
+# with a huge variety of tools via a custom bash command.
 #
+# Usage:
+#
+# ```bash
+# docker run --rm -it --name testtest nginx /bin/bash -c "$(./whisper.sh)"            # drops contents of current working dir to container
+# ```
+#
+# ```bash
+# docker run --rm -it --name testtest nginx /bin/bash -c "$(./whisper.sh README.md)"  # drops README.md to container
+# ```
+#
+#
+# CAVEATS:
+#
+# * There's an upper limit to the amount of data you can share. usually dictated by ARG_MAX or something similar
 
 
-# get the current shell from $SHELL variable
-# if not set, default to /bin/sh
-function getShell() {
-  shell="${SHELL:-/bin/sh}"
-  echo "$shell"
-}
-
-# install some common packages
-function install_packages() {
-
-  packages="curl wget vim"
-
-  if command -v apt-get &> /dev/null; then
-    echo "Detected APT package manager"
-    apt-get update
-    DEBIAN_FRONTEND=noninteractive apt-get install -y $packages
-  elif command -v dnf &> /dev/null; then
-    echo "Detected DNF package manager"
-    dnf install -y $packages
-  elif command -v yum &> /dev/null; then
-    echo "Detected YUM package manager"
-    yum install -y $packages
-  elif command -v pacman &> /dev/null; then
-    echo "Detected Pacman package manager"
-    pacman -Sy --noconfirm $packages
-  elif command -v zypper &> /dev/null; then
-    echo "Detected Zypper package manager"
-    zypper install -y $packages
-  elif command -v apk &> /dev/null; then
-    echo "Detected APK package manager"
-    apk add --no-cache $packages
-  else
-    echo "No known package manager found!"
-    exit 1
-  fi
-}
 
 set +u
 file="$1"
@@ -50,29 +29,31 @@ if [ -z "$1" ]; then
 fi
 set -u
 
-echo "function unpackDir() {"
+# on the client side, unpack is responsible for
+# tarring the file/folder and injecting the base64
+# encoded version of the file's contents into the unpack function
+# a literal EOF (cat <<'EOF') is used to prevent bash from
+# interpreting anything as a shell command
+#
+# on the remote side, cat will read the literal base64-encoded
+# contents, decode them, and untar them
+echo "function unpack() {"
     echo "cat <<'EOF' | base64 -d | tar -xzf -"
     tar -czf - "$file" 2>/dev/null | base64
     echo "EOF"
 echo "}"
 
-# main function. this is the entry point to everything
+# main functio. is the entry point to everything
 function main() {
 
-  # skipping this for now
-  #install_packages
-  unpackDir
+  # unpack the folder
+  unpack
 
-  echo "Using shell $(getShell)"
-  $(getShell)
+  /bin/bash
 }
 
 # all functions have to be declared to be used
-declare -f getShell
-declare -f install_packages
 declare -f main
-
-# you can expose specific functions if you want
 
 # this is what actually runs the 'setup' function
 echo "main"
