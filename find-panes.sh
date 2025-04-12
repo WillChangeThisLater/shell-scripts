@@ -148,7 +148,14 @@ EOF
 }
 
 main() {
-    for pane in $(get_relevant_panes "$1"); do
+
+    panes=$(get_relevant_panes "$1")
+    if [[ -z "$panes" ]]; then
+        echo "No relevant panes found!" >&2
+        exit 1
+    fi
+
+    for pane in $panes; do
         echo
         echo "****************"
         screenshot_pane "$pane" 2>/dev/null
