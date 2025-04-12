@@ -12,7 +12,7 @@ dockershell() {
 }
 
 # 
-proxy() {
+useProxy() {
   # get mitmproxy PIDs
   # if there isn't a proxy running, exit
   proxy_pids=$(ps -x | grep mitmproxy | grep -v grep | awk '{print $1}')
