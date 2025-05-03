@@ -52,16 +52,26 @@ done
 shift $((OPTIND -1))
 
 getPrompt() {
-  cat <<EOF
+  if [ $# -eq 0 ]; then
+    cat <<EOF
 $(tmux capture-pane -p | tail -n "$LIMIT")
+
+
+$PROMPT echo "consider the terminal output above. debug the error" | lm
+EOF
+  else
+    cat <<EOF
+$(tmux capture-pane -p | tail -n "$LIMIT")
+
 
 $PROMPT echo "$@" | lm
 EOF
+  fi
 }
 
 # Execute main script logic
 if [ "$DEBUG" = true ]; then
-  getPrompt
+  getPrompt "$@"
 else
-  getPrompt | lm
+  getPrompt "$@" | lm
 fi
