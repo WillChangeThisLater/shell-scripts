@@ -197,10 +197,20 @@ ln -s /home/arch/scripts/shell-scripts/share.sh /usr/local/bin/share
 /usr/local/bin/share
 ```
 
-### Transcribe
-Currently only works on mac. Sometimes at work I'll take a screenshot of a slack thread
-and I'll want to translate it to text
+### Webshot
+A script to take screenshots of specific URLs using the [pyppeteer](https://github.com/pyppeteer/pyppeteer) library.
 
+#### Requirements
+- Python 3.9 or higher
+- pyppeteer
+
+#### Usage
 ```bash
-./transcribe.sh # on mac, this will translate your latest screenshot to text
+./webshot.py --url <URL> [--path <PATH>] [--fullpage]
 ```
+
+- `--url` : The URL of the webpage to screenshot
+- `--path` : (Optional) The path to save the screenshot
+- `--fullpage` : (Optional) Whether to take a full-page screenshot
+
+If the `--path` is not specified, the screenshot will be printed as a base64 data URL.
