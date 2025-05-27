@@ -14,7 +14,7 @@ usage() {
 
 # Default values
 DEFAULT_PROMPT="[arch@archlinux shell-scripts]$"
-DEFAULT_LIMIT=1000
+DEFAULT_LIMIT=250
 DEBUG=false
 USE_AGENT=false
 
@@ -62,14 +62,14 @@ getPrompt() {
 
   if [ $# -eq 0 ]; then
     cat <<EOF
-$(tmux capture-pane -p | tail -n "$LIMIT")
+$(tmux capture-pane -p -S - | tail -n "$LIMIT")
 
 
 $PROMPT echo "consider the terminal output above. debug the error" | $TOOL
 EOF
   else
     cat <<EOF
-$(tmux capture-pane -p | tail -n "$LIMIT")
+$(tmux capture-pane -p -S - | tail -n "$LIMIT")
 
 
 $PROMPT echo "$@" | $TOOL
